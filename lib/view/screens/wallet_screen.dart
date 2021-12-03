@@ -7,8 +7,8 @@ class WalletScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: Text('Wallet Screen'.toUpperCase(),
-            style: TextStyle(color: Colors.white)),
+        child:
+            Text('Wallet'.toUpperCase(), style: TextStyle(color: Colors.white)),
       ),
     );
   }
