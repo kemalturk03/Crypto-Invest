@@ -1,6 +1,5 @@
-import 'package:crypto_invest/utilities/constants.dart';
-import 'package:crypto_invest/view/widgets/crypto_card.dart';
-import 'package:crypto_invest/view/widgets/expanded_crypto_card.dart';
+import 'package:crypto_invest/model/market.dart';
+import 'package:crypto_invest/view/widgets/coin_list_widget.dart';
 import 'package:crypto_invest/view_model/market_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,35 +15,19 @@ class MarketsScreen extends StatelessWidget {
         children: [
           Consumer<MarketViewModel>(
             builder: (context, marketViewModel, index) {
-              return Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: currenciesList.length - 10,
-                  itemBuilder: (context, index) {
-                    if (marketViewModel.isClicked &&
-                        marketViewModel.listIndex == index) {
-                      return expandedCryptoCard(
-                        context: context,
-                        index: index,
-                        currenciesList: currenciesList,
-                        onPressed: () {
-                          marketViewModel.setClicked(false);
-                        },
-                      );
-                    }
-                    return cryptoCard(
-                      context: context,
-                      currency: currenciesList[index],
-                      colour: index % 2 == 0
-                          ? Color(0xFF1F2632)
-                          : Color(0xFF12171A),
-                      onPressed: () {
-                        marketViewModel.setClicked(true);
-                        marketViewModel.setListIndex(index);
-                      },
-                    );
-                  },
-                ),
+              return StreamBuilder(
+                stream: marketViewModel.streamController.stream,
+                builder: (context, AsyncSnapshot? snapshot) {
+                  if (snapshot!.hasData) {
+                    Market coinData = snapshot.data;
+                    return coinListWidget(
+                        coins: coinData.data!,
+                        marketViewModel: marketViewModel);
+                  }
+                  return Center(
+                    child: RefreshProgressIndicator(),
+                  );
+                },
               );
             },
           ),

@@ -5,11 +5,24 @@ class WalletScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child:
-            Text('Wallet'.toUpperCase(), style: TextStyle(color: Colors.white)),
-      ),
+    return Column(
+      children: [
+        // SfCartesianChart(
+        //   backgroundColor: Colors.white,
+        //   series: <ChartSeries>[
+        //     LineSeries(
+        //         dataSource: mylist,
+        //         xValueMapper: (dynamic data, _) => data.day,
+        //         yValueMapper: (dynamic data, _) => data.rate,
+        //         dataLabelSettings: DataLabelSettings(isVisible: true),
+        //         enableTooltip: true)
+        //   ],
+        //   primaryXAxis:
+        //       NumericAxis(edgeLabelPlacement: EdgeLabelPlacement.shift),
+        //   primaryYAxis:
+        //       NumericAxis(edgeLabelPlacement: EdgeLabelPlacement.shift),
+        // ),
+      ],
     );
   }
 }
