@@ -1,5 +1,10 @@
+import 'dart:ui';
+
 import 'package:crypto_invest/model/market.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import 'constants.dart';
 
 int get nowToInt {
   DateTime now = DateTime.now();
@@ -13,3 +18,14 @@ double coinPriceCalculator(UsdModel coinPrice, dynamic percentage) {
   return currentPrice -
       (currentPrice - (currentPrice / (1 + (percentage / 100))));
 }
+
+BoxDecoration get textFieldBox => BoxDecoration(
+      color: white,
+      borderRadius: BorderRadius.circular(18),
+      boxShadow: [
+        BoxShadow(
+            blurRadius: 1.0,
+            offset: Offset(2, 7),
+            color: black.withOpacity(0.15))
+      ],
+    );

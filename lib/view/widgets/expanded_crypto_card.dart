@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crypto_invest/model/chart_data.dart';
 import 'package:crypto_invest/model/market.dart';
 import 'package:crypto_invest/utilities/constants.dart';
+import 'package:crypto_invest/view/widgets/alert_dialog.dart';
 import 'package:crypto_invest/view_model/market_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -31,14 +32,27 @@ Widget expandedCryptoCard(
                     (iconUrl + '${market!.symbol!.toLowerCase()}' + '.png'),
                 placeholder: (context, url) => CircularProgressIndicator(),
                 errorWidget: (context, url, error) => CircleAvatar(
-                    backgroundColor: Colors.lightBlue,
-                    child: Icon(Icons.attach_money, color: Colors.white)),
+                    backgroundColor: lightBlue,
+                    child: Icon(Icons.attach_money, color: white)),
               ),
             ),
             const SizedBox(width: 12),
             Text(
               '${market.symbol}',
-              style: TextStyle(color: Colors.white, fontSize: 22),
+              style: TextStyle(color: white, fontSize: 22),
+            ),
+            const SizedBox(width: 12),
+            market.quoteModel!.usdModel.percentChange_1h > 0
+                ? Icon(Icons.arrow_upward, color: green)
+                : Icon(Icons.arrow_downward, color: red),
+            const SizedBox(width: 6),
+            Text(
+              '${market.quoteModel!.usdModel.percentChange_1h.toDouble().toStringAsFixed(2).replaceAll('-', '')}',
+              style: TextStyle(
+                  color: market.quoteModel!.usdModel.percentChange_1h > 0
+                      ? green
+                      : red,
+                  fontSize: 18),
             ),
           ],
         ),
@@ -49,7 +63,7 @@ Widget expandedCryptoCard(
             legend: Legend(
                 isVisible: true,
                 position: LegendPosition.bottom,
-                textStyle: TextStyle(color: Colors.white)),
+                textStyle: TextStyle(color: white)),
             primaryXAxis:
                 CategoryAxis(edgeLabelPlacement: EdgeLabelPlacement.shift),
             primaryYAxis: NumericAxis(
@@ -60,12 +74,12 @@ Widget expandedCryptoCard(
                 trendlines: [
                   Trendline(
                       name: 'Average',
-                      color: Colors.red,
+                      color: red,
                       type: TrendlineType.polynomial,
                       markerSettings: MarkerSettings(isVisible: true))
                 ],
                 markerSettings: MarkerSettings(isVisible: true),
-                color: Colors.white,
+                color: white,
                 name: '${market.name}',
                 dataSource: marketData!,
                 xValueMapper: (ChartData sales, _) {
@@ -91,7 +105,48 @@ Widget expandedCryptoCard(
             ],
           ),
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+                width: MediaQuery.of(context).size.width / 3.5,
+                child: ElevatedButton(
+                    onPressed: () async {
+                      var current = market.quoteModel!.usdModel;
+                      await alertDialog(
+                          context: context,
+                          title: market.name,
+                          viewModel: viewModel);
+                      // print(
+                      //     'Current Price: $current\nBalance: ${viewModel.usdBalance}\n');
+                      // viewModel.setBalance(-100);
+                      // viewModel.setCoinBalance(100 / current);
+                      // print('USD Balance: ${viewModel.usdBalance}');
+                      // print('Coin Balance: ${viewModel.coinBalance}');
+                    },
+                    child: Text('BUY'),
+                    style: kBuyButtonStyle)),
+            const SizedBox(width: 12),
+            Container(
+              width: MediaQuery.of(context).size.width / 3.5,
+              child: ElevatedButton(
+                onPressed: () {},
+                child: Text('SELL'),
+                style: kSellButtonStyle,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
       ],
     ),
   );
 }
+
+final kSellButtonStyle = ButtonStyle(
+    backgroundColor: MaterialStateProperty.all(Colors.red.shade700),
+    shape: MaterialStateProperty.all(StadiumBorder()));
+
+final kBuyButtonStyle = ButtonStyle(
+    backgroundColor: MaterialStateProperty.all(Colors.green.shade500),
+    shape: MaterialStateProperty.all(StadiumBorder()));
