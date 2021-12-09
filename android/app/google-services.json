@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "974036089834",
+    "project_id": "crypto-invest-9b9c4",
+    "storage_bucket": "crypto-invest-9b9c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974036089834:android:64faecb068a76c27d85093",
+        "android_client_info": {
+          "package_name": "com.example.crypto_invest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "974036089834-749v6d4h5oqe062gn0fl19s9g1n35pl9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZAFRwiygTFcwUaLrSKZqatcgtte5q34w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "974036089834-749v6d4h5oqe062gn0fl19s9g1n35pl9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

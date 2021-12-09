@@ -33,6 +33,7 @@ const kBlack54TS = TextStyle(color: black54);
 const kWhiteTS = TextStyle(color: white, fontSize: 13);
 const kProductHeaderTS =
     TextStyle(color: black, fontSize: 32, fontWeight: FontWeight.bold);
+const kBalanceTS = TextStyle(color: white, fontWeight: FontWeight.bold);
 
 /*DURATION CONSTANTS*/
 const Duration waitASecond = Duration(seconds: 1);
@@ -61,3 +62,12 @@ const SizedBox sevenPxWidthSpace = SizedBox(width: 7);
 /*TEXT INPUT ACTION CONSTANTS*/
 const TextInputAction actionNext = TextInputAction.next;
 const TextInputAction actionDone = TextInputAction.done;
+
+/*BUTTON STYLE CONSTANTS*/
+final kSellButtonStyle = ButtonStyle(
+    backgroundColor: MaterialStateProperty.all(Colors.red.shade700),
+    shape: MaterialStateProperty.all(StadiumBorder()));
+
+final kBuyButtonStyle = ButtonStyle(
+    backgroundColor: MaterialStateProperty.all(Colors.green.shade500),
+    shape: MaterialStateProperty.all(StadiumBorder()));

@@ -13,12 +13,11 @@ Widget coinListWidget(
       itemCount: coins.length,
       itemBuilder: (context, index) {
         var coin = coins[index];
-
         UsdModel coinPrice = coin.quoteModel!.usdModel;
         if (marketViewModel!.isClicked && marketViewModel.listIndex == index) {
           return expandedCryptoCard(
             context: context,
-            index: index,
+            listIndex: index,
             market: coin,
             onPressed: () {
               marketViewModel.setClicked(false);

@@ -25,12 +25,10 @@ class MarketViewModel extends ChangeNotifier {
 
   int _listIndex = 0;
   bool _isClicked = false;
-  double _usdBalance = 10000;
-  double _coinBalance = 0;
   StreamController _streamController = StreamController();
   List<ChartData> _chartData = [];
   TooltipBehavior _tooltipBehavior = TooltipBehavior();
-  TextEditingController _marketBuyController = TextEditingController();
+
 
   /*_ ile başlayan değişkenler veya metotlar private anlamına geliyor.
   * Yani sadece bu classın içinde kullanabiliriz.
@@ -40,12 +38,10 @@ class MarketViewModel extends ChangeNotifier {
 
   int get listIndex => _listIndex;
   bool get isClicked => _isClicked;
-  double get usdBalance => _usdBalance;
-  double get coinBalance => _coinBalance;
   StreamController get streamController => _streamController;
   List<ChartData> get chartData => _chartData;
   TooltipBehavior get tooltipBehaviour => _tooltipBehavior;
-  TextEditingController get marketBuyController => _marketBuyController;
+
 
   void loadMarkets() async {
     print("loadMarkets called");
@@ -55,15 +51,7 @@ class MarketViewModel extends ChangeNotifier {
     });
   }
 
-  void setBalance(double value) {
-    _usdBalance += value;
-    notifyListeners();
-  }
 
-  void setCoinBalance(double value) {
-    _coinBalance += value;
-    notifyListeners();
-  }
 
   void setListIndex(int listIndex) {
     _listIndex = listIndex;

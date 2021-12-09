@@ -6,10 +6,7 @@ class OptionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(
-        child: Text('Options Screen'.toUpperCase(),
-            style: TextStyle(color: Colors.white)),
-      ),
+      child: Center(child: Text('Options Screen')),
     );
   }
 }
