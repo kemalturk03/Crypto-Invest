@@ -15,9 +15,10 @@ class MarketViewModel extends ChangeNotifier {
 
   MarketViewModel() {
     print("MarketViewModel Constructor Called");
-    loadMarkets();
+    _loadMarkets();
     _streamController = new StreamController();
     _tooltipBehavior = TooltipBehavior(enable: true, color: Colors.blue);
+
     /*Burası bu classın constructorı gibi düşünebiliriz.
     Burada getMarkets metodunu çağırdım çünkü uygulama her açıldığında bu classı çağıracak ve
     Classı her çağırdığında bu metotu çağırarak API den aldığımız verileri listeye aktaracak*/
@@ -28,7 +29,8 @@ class MarketViewModel extends ChangeNotifier {
   StreamController _streamController = StreamController();
   List<ChartData> _chartData = [];
   TooltipBehavior _tooltipBehavior = TooltipBehavior();
-
+  List<Coin> _coinData = [];
+  String _snackBarContent = "";
 
   /*_ ile başlayan değişkenler veya metotlar private anlamına geliyor.
   * Yani sadece bu classın içinde kullanabiliriz.
@@ -41,9 +43,10 @@ class MarketViewModel extends ChangeNotifier {
   StreamController get streamController => _streamController;
   List<ChartData> get chartData => _chartData;
   TooltipBehavior get tooltipBehaviour => _tooltipBehavior;
+  List<Coin> get coinData => _coinData;
+  String get snackBarContent => _snackBarContent;
 
-
-  void loadMarkets() async {
+  void _loadMarkets() async {
     print("loadMarkets called");
     await _marketService.getData().then((value) {
       _streamController.add(value);
@@ -51,10 +54,17 @@ class MarketViewModel extends ChangeNotifier {
     });
   }
 
-
+  void setCoinData(List<Coin> coinData) {
+    _coinData = coinData;
+  }
 
   void setListIndex(int listIndex) {
     _listIndex = listIndex;
+    notifyListeners();
+  }
+
+  void setSnackBarContent(String snackBarContent) {
+    _snackBarContent = snackBarContent;
     notifyListeners();
   }
 

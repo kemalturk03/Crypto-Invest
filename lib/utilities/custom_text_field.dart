@@ -5,7 +5,11 @@ import 'components.dart';
 import 'constants.dart';
 
 Widget customTextField(
-    double height, double width, WalletViewModel walletViewModel) {
+    double height,
+    double width,
+    WalletViewModel walletViewModel,
+    String? dialogLabel,
+    TextEditingController? controller) {
   return Container(
     height: height / 20,
     width: width / 1,
@@ -17,13 +21,13 @@ Widget customTextField(
         Expanded(
           child: TextField(
             autofocus: true,
-            controller: walletViewModel.marketBuyController,
+            controller: controller,
             textAlignVertical: TextAlignVertical.center,
             style: kBlackTS,
             cursorColor: grey,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              hintText: 'How Much You Want To Buy?',
+              hintText: 'How Much You Want To $dialogLabel?',
               hintStyle: kBlack54TS,
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,

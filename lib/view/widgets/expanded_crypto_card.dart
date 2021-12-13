@@ -1,10 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:crypto_invest/model/balance.dart';
 import 'package:crypto_invest/model/chart_data.dart';
 import 'package:crypto_invest/model/market.dart';
+import 'package:crypto_invest/service/firebase_service.dart';
+import 'package:crypto_invest/utilities/components.dart';
 import 'package:crypto_invest/utilities/constants.dart';
 import 'package:crypto_invest/view/widgets/alert_dialog.dart';
 import 'package:crypto_invest/view_model/market_view_model.dart';
 import 'package:crypto_invest/view_model/wallet_view_model.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -17,9 +21,12 @@ Widget expandedCryptoCard(
     Function()? onPressed,
     List<ChartData>? marketData,
     MarketViewModel? viewModel}) {
+  final _firebaseRef = FirebaseDatabase.instance.reference();
+  final _firebaseService = FirebaseService();
+  Size size = MediaQuery.of(context).size;
   return Consumer<WalletViewModel>(
     builder: (context, walletVM, vmIndex) => Container(
-      height: MediaQuery.of(context).size.height / 1.8,
+      height: size.height / 1.8,
       color: listIndex % 2 == 0 ? Color(0xFF1F2632) : Color(0xFF12171A),
       child: Column(
         children: [
@@ -28,15 +35,13 @@ Widget expandedCryptoCard(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: MediaQuery.of(context).size.width / 10,
-                height: MediaQuery.of(context).size.width / 10,
+                width: size.width / 10,
+                height: size.width / 10,
                 child: CachedNetworkImage(
                   imageUrl:
                       (iconUrl + '${market!.symbol!.toLowerCase()}' + '.png'),
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => CircleAvatar(
-                      backgroundColor: lightBlue,
-                      child: Icon(Icons.attach_money, color: white)),
+                  placeholder: (context, url) => customIndicator,
+                  errorWidget: (context, url, error) => defaultCoinAvatar,
                 ),
               ),
               const SizedBox(width: 12),
@@ -112,22 +117,83 @@ Widget expandedCryptoCard(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                  width: MediaQuery.of(context).size.width / 3.5,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        alertDialog(
-                            context: context,
-                            market: market,
-                            viewModel: walletVM);
-                      },
-                      child: Text('BUY'),
-                      style: kBuyButtonStyle)),
+                width: size.width / 3.5,
+                child: ElevatedButton(
+                    onPressed: () {
+                      alertDialog(
+                        context: context,
+                        coinTitle: market.name,
+                        viewModel: walletVM,
+                        dialogLabel: 'Buy',
+                        controller: walletVM.buyController,
+                        buttonStyle: kBuyButtonStyle,
+                        onPressed: () async {
+                          var controller = walletVM.buyController;
+                          if (controller.text.isNotEmpty) {
+                            var enteredValue = double.parse(controller.text);
+                            var enteredCoin = enteredValue /
+                                market.quoteModel!.usdModel.price;
+                            if (!walletVM.zeroBalance &&
+                                enteredValue <= walletVM.usdBalance) {
+                              _firebaseRef.once().then(
+                                (snapshot) {
+                                  Iterable existedCoins =
+                                      (snapshot.value['balances']
+                                              as Map<dynamic, dynamic>)
+                                          .keys;
+                                  Balance balance = Balance.fromJson(
+                                      snapshot.value,
+                                      market.name!.toLowerCase());
+                                  if (balance.usd != null) {
+                                    print(balance.usd);
+                                    var updatedUsdValue =
+                                        balance.usd! - enteredValue;
+                                    walletVM.updateUsdBalance(updatedUsdValue);
+                                  }
+                                  if (existedCoins
+                                      .contains(market.name!.toLowerCase())) {
+                                    _firebaseService.updateCoin(
+                                      coinTitle: market.name,
+                                      updatedCoinValue: enteredCoin +
+                                          balance.coin!.coinValue!.toDouble(),
+                                    );
+                                  } else {
+                                    _firebaseService.generateCoin(
+                                      coinTitle: market.name,
+                                      coinSymbol: market.symbol,
+                                      coinValue: enteredCoin,
+                                      coinIndex: listIndex,
+                                    );
+                                  }
+                                },
+                              );
+                              viewModel.setSnackBarContent('Successful');
+                            } else {
+                              viewModel.setSnackBarContent(
+                                  'The value cannot be higher than your balance!');
+                            }
+                          } else {
+                            viewModel.setSnackBarContent(
+                                'The value cannot be empty!');
+                          }
+                          controller.clear();
+                          Navigator.pop(context);
+                          await Future.delayed(Duration(milliseconds: 300));
+                          showSnackBar(
+                              context: context,
+                              description: viewModel.snackBarContent);
+                        },
+                      );
+                    },
+                    child: Text('BUY'),
+                    style: kBuyButtonStyle),
+              ),
               const SizedBox(width: 12),
               Container(
-                width: MediaQuery.of(context).size.width / 3.5,
+                width: size.width / 3.5,
                 child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text('SELL'),
+                  onPressed: onPressed,
+                  child: Text('CLOSE'),
                   style: kSellButtonStyle,
                 ),
               ),

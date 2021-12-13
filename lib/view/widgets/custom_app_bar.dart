@@ -2,7 +2,6 @@ import 'package:crypto_invest/utilities/constants.dart';
 import 'package:crypto_invest/view_model/wallet_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
 
 Widget customAppBar(BuildContext context, WalletViewModel? viewModel) {
   Size size = MediaQuery.of(context).size;
@@ -17,68 +16,30 @@ Widget customAppBar(BuildContext context, WalletViewModel? viewModel) {
               top: size.width / 30),
           height: size.height / 5 - 20,
           decoration: BoxDecoration(
-              color: red,
+              color: Color(0xFF12171A),
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(36),
                   bottomRight: Radius.circular(36))),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    child:
-                        Icon(Ionicons.wallet_outline, color: black, size: 34),
-                    radius: 28,
-                    backgroundColor: white,
-                  ),
-                  const SizedBox(width: 8),
-                  Text('Wallet', style: kProductHeaderTS),
-                  const SizedBox(width: 8),
-                ],
-              ),
-              Row(
-                children: [
-                  Column(
-                    children: [
-                      Text('Coin',
-                          style:
-                              kBalanceTS.copyWith(fontSize: size.width / 20)),
-                      Text(
-                          viewModel!.coinBalance.toString().isNotEmpty
-                              ? '${viewModel.coinBalance.toStringAsFixed(4)} BTC'
-                              : '0',
-                          style:
-                              kBalanceTS.copyWith(fontSize: size.width / 20)),
-                    ],
-                  ),
-                  const SizedBox(width: 16),
-                ],
-              ),
-              Row(
-                children: [
-                  Column(
-                    children: [
-                      Text('USD',
-                          style:
-                              kBalanceTS.copyWith(fontSize: size.width / 20)),
-                      Row(
-                        children: [
-                          Icon(CupertinoIcons.money_dollar,
-                              size: size.width / 20, color: white),
-                          Text(
-                              viewModel.usdBalance.toString().isNotEmpty
-                                  ? '${viewModel.usdBalance}'
-                                  : '0',
-                              style: kBalanceTS.copyWith(
-                                  fontSize: size.width / 20)),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 16),
-                ],
-              ),
+              Text('The Dollar Balance:',
+                  style: kBalanceTS.copyWith(
+                      fontSize: size.width / 20,
+                      color: Colors.yellow.shade800)),
+              const SizedBox(width: 12),
+              Text(
+                  viewModel!.usdBalance.toString().isNotEmpty
+                      ? '\$${viewModel.usdBalance} '
+                      : '\$0',
+                  style: kBalanceTS.copyWith(fontSize: size.width / 20)),
+              const SizedBox(width: 12),
+              CircleAvatar(
+                backgroundColor: white,
+                child: IconButton(
+                    onPressed: viewModel.setBalances,
+                    icon: Icon(Icons.refresh, color: Colors.yellow.shade800)),
+              )
             ],
           ),
         ),

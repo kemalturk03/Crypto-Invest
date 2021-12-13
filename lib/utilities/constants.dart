@@ -30,9 +30,10 @@ const kBlackHeaderTS = TextStyle(color: black, fontWeight: FontWeight.bold);
 const kRedTS = TextStyle(color: red);
 const kBlueTS = TextStyle(color: blue);
 const kBlack54TS = TextStyle(color: black54);
-const kWhiteTS = TextStyle(color: white, fontSize: 13);
+const kWhiteTS =
+    TextStyle(color: white, fontSize: 13, fontWeight: FontWeight.bold);
 const kProductHeaderTS =
-    TextStyle(color: black, fontSize: 32, fontWeight: FontWeight.bold);
+    TextStyle(color: white, fontSize: 32, fontWeight: FontWeight.bold);
 const kBalanceTS = TextStyle(color: white, fontWeight: FontWeight.bold);
 
 /*DURATION CONSTANTS*/
@@ -67,7 +68,18 @@ const TextInputAction actionDone = TextInputAction.done;
 final kSellButtonStyle = ButtonStyle(
     backgroundColor: MaterialStateProperty.all(Colors.red.shade700),
     shape: MaterialStateProperty.all(StadiumBorder()));
-
+final kYellowButtonStyle = ButtonStyle(
+    backgroundColor: MaterialStateProperty.all(Colors.yellow.shade800),
+    shape: MaterialStateProperty.all(StadiumBorder()));
 final kBuyButtonStyle = ButtonStyle(
     backgroundColor: MaterialStateProperty.all(Colors.green.shade500),
     shape: MaterialStateProperty.all(StadiumBorder()));
+/*WIDGET CONSTANTS*/
+
+const Widget customIndicator = Center(
+  child: CircularProgressIndicator(
+    strokeWidth: 1,
+  ),
+);
+const Widget defaultCoinAvatar = CircleAvatar(
+    backgroundColor: lightBlue, child: Icon(Icons.attach_money, color: white));

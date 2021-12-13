@@ -26,14 +26,9 @@ class MyApp extends StatelessWidget {
                 create: (context) => MainViewModel(),
               ),
             ],
-            child: MultiProvider(
-              providers: [
-                ChangeNotifierProvider(create: (context) => MainViewModel()),
-              ],
-              child: MaterialApp(
-                debugShowCheckedModeBanner: false,
-                home: HomeScreen(),
-              ),
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              home: HomeScreen(),
             ),
           );
         return MaterialApp(

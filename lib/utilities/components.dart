@@ -6,11 +6,11 @@ import 'package:intl/intl.dart';
 
 import 'constants.dart';
 
-int get nowToInt {
+String get nowToString {
   DateTime now = DateTime.now();
-  DateFormat formatter = DateFormat("ss");
-  String formattedTime = formatter.format(now);
-  return int.parse(formattedTime);
+  DateFormat formatter = DateFormat("dd/MM/yyyy HH:mm:ss");
+
+  return formatter.format(now);
 }
 
 double coinPriceCalculator(UsdModel coinPrice, dynamic percentage) {
@@ -29,3 +29,25 @@ BoxDecoration get textFieldBox => BoxDecoration(
             color: black.withOpacity(0.15))
       ],
     );
+
+ScaffoldFeatureController showSnackBar(
+    {required BuildContext context, required String description}) {
+  double width = MediaQuery.of(context).size.width;
+  return ScaffoldMessenger.of(context)
+      .showSnackBar(customSnackBar(description: description, width: width));
+}
+
+SnackBar customSnackBar({required String description, required double width}) {
+  return SnackBar(
+    content: Text(
+      '$description',
+      style: kWhiteTS.copyWith(
+          color: Colors.yellow.shade800, fontSize: width / 25),
+      textAlign: TextAlign.center,
+    ),
+    backgroundColor: black,
+    behavior: SnackBarBehavior.floating,
+    shape: StadiumBorder(),
+    dismissDirection: DismissDirection.horizontal,
+  );
+}

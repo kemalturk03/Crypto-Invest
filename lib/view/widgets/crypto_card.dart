@@ -11,6 +11,7 @@ Widget cryptoCard(
   return GestureDetector(
     onTap: onPressed,
     child: Container(
+      height: MediaQuery.of(context).size.height / 8,
       color: colour,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -20,9 +21,8 @@ Widget cryptoCard(
             height: MediaQuery.of(context).size.width / 10,
             child: CachedNetworkImage(
               imageUrl: (iconUrl + '${market!.symbol!.toLowerCase()}' + '.png'),
-              placeholder: (context, url) => CircularProgressIndicator(),
-              errorWidget: (context, url, error) =>
-                  CircleAvatar(child: Icon(Icons.attach_money, color: white)),
+              placeholder: (context, url) => customIndicator,
+              errorWidget: (context, url, error) => defaultCoinAvatar,
             ),
           ),
           const SizedBox(width: 12),
@@ -45,7 +45,6 @@ Widget cryptoCard(
           ),
         ],
       ),
-      height: MediaQuery.of(context).size.height / 8,
     ),
   );
 }
