@@ -34,8 +34,8 @@ Future alertDialog({
           width: size.width / 1.2,
           child: Column(
             children: [
-              customTextField(
-                  size.height, size.width, viewModel!, dialogLabel, controller),
+              customTextField(size.height, size.width, viewModel!, dialogLabel,
+                  controller, true),
               const SizedBox(height: 12),
               Container(
                 width: size.width / 4,

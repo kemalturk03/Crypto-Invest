@@ -12,7 +12,6 @@ class WalletViewModel extends ChangeNotifier {
   FirebaseService _fireService = FirebaseService();
   WalletViewModel() {
     setBalances();
-    _setZeroBalance();
     _loadMarkets();
     print('Wallet View Model Constructor Called!');
   }
@@ -20,6 +19,7 @@ class WalletViewModel extends ChangeNotifier {
   final firebaseRef = FirebaseDatabase.instance.reference();
   TextEditingController _buyController = TextEditingController();
   TextEditingController _sellController = TextEditingController();
+  TextEditingController _topUpBalanceController = TextEditingController();
   double? _usdBalance;
   bool _loading = true;
   bool _zeroBalance = false;
@@ -30,6 +30,7 @@ class WalletViewModel extends ChangeNotifier {
 
   TextEditingController get buyController => _buyController;
   TextEditingController get sellController => _sellController;
+  TextEditingController get topUpBalanceController => _topUpBalanceController;
   double get usdBalance => _usdBalance!;
   bool get loading => _loading;
   bool get zeroBalance => _zeroBalance;
@@ -43,17 +44,26 @@ class WalletViewModel extends ChangeNotifier {
     _usdBalance = await firebaseRef
         .once()
         .then((value) => double.parse(value.value['usdBalance'].toString()));
+    _usdBalance == 0.0 ? _zeroBalance = true : _zeroBalance = false;
     _setLoading(false);
+    notifyListeners();
   }
 
   void updateUsdBalance(double value) {
     firebaseRef.update({'usdBalance': value});
+    setBalances();
     notifyListeners();
   }
 
   void setSnackBarContent(String snackBarContent) {
     _snackBarContent = snackBarContent;
     notifyListeners();
+  }
+
+  void topUpBalance(double enteredValue) {
+    firebaseRef.child('usdBalance').once().then((value) {
+      updateUsdBalance(value.value + enteredValue);
+    });
   }
 
   void sellCoin(
@@ -101,11 +111,6 @@ class WalletViewModel extends ChangeNotifier {
 
   void _setLoading(bool loading) {
     _loading = loading;
-    notifyListeners();
-  }
-
-  void _setZeroBalance() {
-    if (_usdBalance == 0) _zeroBalance = true;
     notifyListeners();
   }
 }

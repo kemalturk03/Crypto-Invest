@@ -1,4 +1,5 @@
 import 'package:crypto_invest/model/balance.dart';
+import 'package:crypto_invest/utilities/components.dart';
 import 'package:crypto_invest/utilities/constants.dart';
 import 'package:crypto_invest/view/widgets/custom_app_bar.dart';
 import 'package:crypto_invest/view/widgets/large_wallet_card.dart';
@@ -24,7 +25,8 @@ class WalletScreen extends StatelessWidget {
               ? customIndicator
               : Column(
                   children: [
-                    customAppBar(context, viewModel),
+                    customAppBar(context,
+                        walletScreenAppBar(viewModel: viewModel, size: size)),
                     StreamBuilder(
                       stream: viewModel.firebaseRef.onValue,
                       builder: (context, AsyncSnapshot? snapshot) {
@@ -52,22 +54,27 @@ class WalletScreen extends StatelessWidget {
                                       coinSymbol: balance.coin!.coinSymbol!
                                           .toUpperCase(),
                                       balance: balance,
-                                      viewModel: viewModel);
+                                      viewModel: viewModel,
+                                      onPressed: () {
+                                        viewModel.setClicked(false);
+                                      });
                                 }
-                                return walletCard(
-                                    index: index,
-                                    size: size,
-                                    url: (iconUrl +
-                                        '${balance.coin!.coinSymbol!.toLowerCase()}' +
-                                        '.png'),
-                                    coinSymbol:
-                                        balance.coin!.coinSymbol!.toUpperCase(),
-                                    balance: balance,
-                                    viewModel: viewModel,
-                                    onPressed: () {
-                                      viewModel.setClicked(true);
-                                      viewModel.setListIndex(index);
-                                    });
+                                return balance.coin!.coinValue! == 0
+                                    ? Container()
+                                    : walletCard(
+                                        index: index,
+                                        size: size,
+                                        url: (iconUrl +
+                                            '${balance.coin!.coinSymbol!.toLowerCase()}' +
+                                            '.png'),
+                                        coinSymbol: balance.coin!.coinSymbol!
+                                            .toUpperCase(),
+                                        balance: balance,
+                                        viewModel: viewModel,
+                                        onPressed: () {
+                                          viewModel.setClicked(true);
+                                          viewModel.setListIndex(index);
+                                        });
                               },
                             ),
                           );

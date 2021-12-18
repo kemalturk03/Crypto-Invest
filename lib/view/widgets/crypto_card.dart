@@ -8,10 +8,11 @@ Widget cryptoCard(
     Coin? market,
     Function()? onPressed,
     Color? colour}) {
+  Size size = MediaQuery.of(context).size;
   return GestureDetector(
     onTap: onPressed,
     child: Container(
-      height: MediaQuery.of(context).size.height / 8,
+      height: size.height / 8,
       color: colour,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -25,23 +26,23 @@ Widget cryptoCard(
               errorWidget: (context, url, error) => defaultCoinAvatar,
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: size.width / 35),
           Text(
             '${market.symbol}',
-            style: TextStyle(color: white, fontSize: 22),
+            style: TextStyle(color: white, fontSize: size.width / 20),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: size.width / 35),
           market.quoteModel!.usdModel.percentChange_1h > 0
               ? Icon(Icons.arrow_upward, color: green)
               : Icon(Icons.arrow_downward, color: red),
-          const SizedBox(width: 6),
+          SizedBox(width: size.width / 45),
           Text(
             '${market.quoteModel!.usdModel.percentChange_1h.toDouble().toStringAsFixed(2).replaceAll('-', '')}',
             style: TextStyle(
                 color: market.quoteModel!.usdModel.percentChange_1h > 0
                     ? green
                     : red,
-                fontSize: 18),
+                fontSize: size.width / 22),
           ),
         ],
       ),

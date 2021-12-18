@@ -9,10 +9,11 @@ Widget customTextField(
     double width,
     WalletViewModel walletViewModel,
     String? dialogLabel,
-    TextEditingController? controller) {
+    TextEditingController? controller,
+    bool? autoOpen) {
   return Container(
     height: height / 20,
-    width: width / 1,
+    width: width,
     margin: EdgeInsets.symmetric(horizontal: 22),
     padding: EdgeInsets.symmetric(horizontal: 22),
     decoration: textFieldBox,
@@ -20,7 +21,7 @@ Widget customTextField(
       children: [
         Expanded(
           child: TextField(
-            autofocus: true,
+            autofocus: autoOpen!,
             controller: controller,
             textAlignVertical: TextAlignVertical.center,
             style: kBlackTS,

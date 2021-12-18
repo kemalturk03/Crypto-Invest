@@ -1,9 +1,7 @@
-import 'package:crypto_invest/utilities/constants.dart';
-import 'package:crypto_invest/view_model/wallet_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget customAppBar(BuildContext context, WalletViewModel? viewModel) {
+Widget customAppBar(BuildContext context, Widget? rowChild) {
   Size size = MediaQuery.of(context).size;
   return Container(
     height: size.height / 9.5,
@@ -20,28 +18,7 @@ Widget customAppBar(BuildContext context, WalletViewModel? viewModel) {
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(36),
                   bottomRight: Radius.circular(36))),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('The Dollar Balance:',
-                  style: kBalanceTS.copyWith(
-                      fontSize: size.width / 20,
-                      color: Colors.yellow.shade800)),
-              const SizedBox(width: 12),
-              Text(
-                  viewModel!.usdBalance.toString().isNotEmpty
-                      ? '\$${viewModel.usdBalance} '
-                      : '\$0',
-                  style: kBalanceTS.copyWith(fontSize: size.width / 20)),
-              const SizedBox(width: 12),
-              CircleAvatar(
-                backgroundColor: white,
-                child: IconButton(
-                    onPressed: viewModel.setBalances,
-                    icon: Icon(Icons.refresh, color: Colors.yellow.shade800)),
-              )
-            ],
-          ),
+          child: rowChild,
         ),
       ],
     ),

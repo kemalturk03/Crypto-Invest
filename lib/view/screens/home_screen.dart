@@ -7,27 +7,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<MainViewModel>(
-      builder: (context, mainViewModel, index) => onAppStarting(mainViewModel),
+      builder: (context, mainViewModel, index) =>
+          TabBarScreen(viewModel: mainViewModel),
     );
   }
 }
-
-Widget onAppStarting(MainViewModel mainViewModel) {
-  /*Bunu buraya ayırmamın sebebi eğer loading falan yapılacak olursa uygulama başlangıcında onu kontrol edip,
-  * Ona göre bir yuvarlak yükleniyor indicator döndüren bir sayfaya yönlendirmek için.
-  * Mesela diyecektim ki burada mainViewModel.isLaoding == true ise return AppLoading else return TabBarScreen.
-  * Bunu belki daha sonra kullanabiliriz*/
-  return TabBarScreen(viewModel: mainViewModel);
-}
-
-/*
-
-Widget appLoading() {
-  return Scaffold(
-    body: Center(
-      child: RefreshProgressIndicator(),
-    ),
-  );
-}
-
-*/

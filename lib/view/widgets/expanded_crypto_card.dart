@@ -30,7 +30,7 @@ Widget expandedCryptoCard(
       color: listIndex % 2 == 0 ? Color(0xFF1F2632) : Color(0xFF12171A),
       child: Column(
         children: [
-          const SizedBox(height: 14),
+          SizedBox(height: size.width / 32),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -44,27 +44,27 @@ Widget expandedCryptoCard(
                   errorWidget: (context, url, error) => defaultCoinAvatar,
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: size.width / 35),
               Text(
                 '${market.symbol}',
-                style: TextStyle(color: white, fontSize: 22),
+                style: TextStyle(color: white, fontSize: size.width / 20),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: size.width / 35),
               market.quoteModel!.usdModel.percentChange_1h > 0
                   ? Icon(Icons.arrow_upward, color: green)
                   : Icon(Icons.arrow_downward, color: red),
-              const SizedBox(width: 6),
+              SizedBox(width: size.width / 45),
               Text(
                 '${market.quoteModel!.usdModel.percentChange_1h.toDouble().toStringAsFixed(2).replaceAll('-', '')}',
                 style: TextStyle(
                     color: market.quoteModel!.usdModel.percentChange_1h > 0
                         ? green
                         : red,
-                    fontSize: 18),
+                    fontSize: size.width / 22),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: size.width / 35),
           Expanded(
             child: SfCartesianChart(
               plotAreaBorderWidth: 0,
@@ -119,87 +119,106 @@ Widget expandedCryptoCard(
               Container(
                 width: size.width / 3.5,
                 child: ElevatedButton(
-                    onPressed: () {
-                      alertDialog(
-                        context: context,
-                        coinTitle: market.name,
-                        viewModel: walletVM,
-                        dialogLabel: 'Buy',
-                        controller: walletVM.buyController,
-                        buttonStyle: kBuyButtonStyle,
-                        onPressed: () async {
-                          var controller = walletVM.buyController;
-                          if (controller.text.isNotEmpty) {
-                            var enteredValue = double.parse(controller.text);
-                            var enteredCoin = enteredValue /
-                                market.quoteModel!.usdModel.price;
-                            if (!walletVM.zeroBalance &&
-                                enteredValue <= walletVM.usdBalance) {
-                              _firebaseRef.once().then(
-                                (snapshot) {
-                                  Iterable existedCoins =
-                                      (snapshot.value['balances']
-                                              as Map<dynamic, dynamic>)
-                                          .keys;
-                                  Balance balance = Balance.fromJson(
-                                      snapshot.value,
-                                      market.name!.toLowerCase());
-                                  if (balance.usd != null) {
-                                    print(balance.usd);
-                                    var updatedUsdValue =
-                                        balance.usd! - enteredValue;
-                                    walletVM.updateUsdBalance(updatedUsdValue);
-                                  }
-                                  if (existedCoins
-                                      .contains(market.name!.toLowerCase())) {
-                                    _firebaseService.updateCoin(
-                                      coinTitle: market.name,
-                                      updatedCoinValue: enteredCoin +
-                                          balance.coin!.coinValue!.toDouble(),
-                                    );
-                                  } else {
-                                    _firebaseService.generateCoin(
-                                      coinTitle: market.name,
-                                      coinSymbol: market.symbol,
-                                      coinValue: enteredCoin,
-                                      coinIndex: listIndex,
-                                    );
-                                  }
-                                },
-                              );
-                              viewModel.setSnackBarContent('Successful');
-                            } else {
-                              viewModel.setSnackBarContent(
-                                  'The value cannot be higher than your balance!');
-                            }
-                          } else {
-                            viewModel.setSnackBarContent(
-                                'The value cannot be empty!');
-                          }
-                          controller.clear();
-                          Navigator.pop(context);
-                          await Future.delayed(Duration(milliseconds: 300));
-                          showSnackBar(
+                    onPressed: walletVM.zeroBalance
+                        ? null
+                        : () {
+                            alertDialog(
                               context: context,
-                              description: viewModel.snackBarContent);
-                        },
-                      );
-                    },
+                              coinTitle: market.name,
+                              viewModel: walletVM,
+                              dialogLabel: 'Buy',
+                              controller: walletVM.buyController,
+                              buttonStyle: kBuyButtonStyle,
+                              onPressed: () async {
+                                var controller = walletVM.buyController;
+                                if (controller.text.isNotEmpty) {
+                                  var enteredValue =
+                                      double.parse(controller.text);
+                                  var enteredCoin = enteredValue /
+                                      market.quoteModel!.usdModel.price;
+                                  if (walletVM.zeroBalance) {
+                                    print("Condition zero balance");
+                                    viewModel.setSnackBarContent(
+                                        'Your balance is 0');
+                                  } else if (enteredValue >
+                                      walletVM.usdBalance) {
+                                    print(
+                                        "Condition enteredValue < usdBalance");
+                                    viewModel.setSnackBarContent(
+                                        'The value cannot be higher than your balance!');
+                                  } else if (enteredValue <= 0) {
+                                    print("Condition enteredValue is negative");
+                                    viewModel.setSnackBarContent(
+                                        'The value must be higher than 0');
+                                  } else {
+                                    print("Condition else");
+                                    _firebaseRef.once().then(
+                                      (snapshot) {
+                                        Iterable existedCoins =
+                                            (snapshot.value['balances']
+                                                    as Map<dynamic, dynamic>)
+                                                .keys;
+                                        Balance balance = Balance.fromJson(
+                                            snapshot.value,
+                                            market.name!.toLowerCase());
+                                        if (balance.usd != null) {
+                                          print(balance.usd);
+                                          var updatedUsdValue =
+                                              balance.usd! - enteredValue;
+                                          walletVM.updateUsdBalance(
+                                              updatedUsdValue);
+                                        }
+                                        if (existedCoins.contains(
+                                            market.name!.toLowerCase())) {
+                                          _firebaseService.updateCoin(
+                                            coinTitle: market.name,
+                                            updatedCoinValue: enteredCoin +
+                                                balance.coin!.coinValue!
+                                                    .toDouble(),
+                                          );
+                                        } else {
+                                          _firebaseService.generateCoin(
+                                            coinTitle: market.name,
+                                            coinSymbol: market.symbol,
+                                            coinValue: enteredCoin,
+                                            coinIndex: listIndex,
+                                          );
+                                        }
+                                      },
+                                    );
+                                    viewModel.setSnackBarContent(
+                                        'Successfully Purchased');
+                                    print(walletVM.zeroBalance);
+                                  }
+                                } else {
+                                  viewModel.setSnackBarContent(
+                                      'The value cannot be empty!');
+                                }
+                                controller.clear();
+                                Navigator.pop(context);
+                                await Future.delayed(
+                                    Duration(milliseconds: 300));
+                                showSnackBar(
+                                    context: context,
+                                    description: viewModel.snackBarContent);
+                              },
+                            );
+                          },
                     child: Text('BUY'),
                     style: kBuyButtonStyle),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: size.width / 35),
               Container(
                 width: size.width / 3.5,
                 child: ElevatedButton(
                   onPressed: onPressed,
                   child: Text('CLOSE'),
-                  style: kSellButtonStyle,
+                  style: kCloseButtonStyle,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: size.width / 42),
         ],
       ),
     ),

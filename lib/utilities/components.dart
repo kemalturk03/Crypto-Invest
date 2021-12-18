@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:crypto_invest/model/market.dart';
+import 'package:crypto_invest/view_model/wallet_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -49,5 +50,42 @@ SnackBar customSnackBar({required String description, required double width}) {
     behavior: SnackBarBehavior.floating,
     shape: StadiumBorder(),
     dismissDirection: DismissDirection.horizontal,
+  );
+}
+
+Widget walletScreenAppBar({
+  WalletViewModel? viewModel,
+  Size? size,
+}) {
+  return StreamBuilder(
+      stream: viewModel!.firebaseRef.child('usdBalance').onValue,
+      builder: (context, AsyncSnapshot? snapshot) {
+        if (snapshot!.hasData) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('The Dollar Balance:',
+                  style: kBalanceTS.copyWith(
+                      fontSize: size!.width / 20,
+                      color: Colors.yellow.shade800)),
+              const SizedBox(width: 12),
+              Text(
+                  '\$${double.parse(snapshot.data.snapshot.value.toString()).toStringAsFixed(3)}',
+                  style: kBalanceTS.copyWith(fontSize: size.width / 20)),
+            ],
+          );
+        }
+        return customIndicator;
+      });
+}
+
+Widget optionScreenAppBar(size) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Text('Top Up Your Balance',
+          style: kBalanceTS.copyWith(
+              fontSize: size.width / 20, color: Colors.yellow.shade800)),
+    ],
   );
 }

@@ -65,7 +65,7 @@ const TextInputAction actionNext = TextInputAction.next;
 const TextInputAction actionDone = TextInputAction.done;
 
 /*BUTTON STYLE CONSTANTS*/
-final kSellButtonStyle = ButtonStyle(
+final kCloseButtonStyle = ButtonStyle(
     backgroundColor: MaterialStateProperty.all(Colors.red.shade700),
     shape: MaterialStateProperty.all(StadiumBorder()));
 final kYellowButtonStyle = ButtonStyle(
