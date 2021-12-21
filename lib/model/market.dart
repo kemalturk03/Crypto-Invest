@@ -122,7 +122,7 @@ class UsdModel {
       percentChange_7d:
           json["percent_change_7d"] == null ? 0.0 : json["percent_change_7d"],
       percentChange_30d:
-          json["percent_change_30d"] == null ? 0.0 : json["percent_change_7d"],
+          json["percent_change_30d"] == null ? 0.0 : json["percent_change_30d"],
       percentChange_60d:
           json["percent_change60d"] == null ? 0.0 : json["percent_change60d"],
       percentChange_90d:
