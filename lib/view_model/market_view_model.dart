@@ -9,9 +9,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class MarketViewModel extends ChangeNotifier {
   MarketService _marketService = MarketService();
-  /*Kanka bu class sana bahsettiğim state management ile ilgili class
-  * Yani biz fonksiyonlarımızı buraya yazıcaz screen classlarında kullanıcaz
-  * Screen classlarında kullanırken bu classa erişmek için Consumer diye bir widget var onu kulanıyoruz.*/
 
   MarketViewModel() {
     print("MarketViewModel Constructor Called");
@@ -19,9 +16,6 @@ class MarketViewModel extends ChangeNotifier {
     _streamController = new StreamController();
     _tooltipBehavior = TooltipBehavior(enable: true, color: Colors.blue);
 
-    /*Burası bu classın constructorı gibi düşünebiliriz.
-    Burada getMarkets metodunu çağırdım çünkü uygulama her açıldığında bu classı çağıracak ve
-    Classı her çağırdığında bu metotu çağırarak API den aldığımız verileri listeye aktaracak*/
   }
 
   int _listIndex = 0;
@@ -32,11 +26,6 @@ class MarketViewModel extends ChangeNotifier {
   List<Coin> _coinData = [];
   String _snackBarContent = "";
 
-  /*_ ile başlayan değişkenler veya metotlar private anlamına geliyor.
-  * Yani sadece bu classın içinde kullanabiliriz.
-  * Önce private ları yukarıda tanımladık. Aşağıda ise get kullarak public olanlarını tanımladık.
-  * Bu public olanları diğer screen classlarında veya herhangi bir diğer classta kullanabilicez
-  * Özetle yukarıdakiler setter aşağıdakiler getter*/
 
   int get listIndex => _listIndex;
   bool get isClicked => _isClicked;

@@ -10,10 +10,7 @@ class TabBarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Consumer<MainViewModel>(
-        /*Bu Consumer Widgetı ile içine verdiğimiz MainViewModel classındaki
-          metotlara ve diğer şeylere erişebiliyoruz.*/
         builder: (context, mainViewModel, index) {
-          /*Küçük harfle başlayan şu mainViewModel'i de o classın objecti gibi düşünebilirsin*/
           return Scaffold(
             backgroundColor: Colors.grey[800],
             body: mainViewModel.tabs[mainViewModel.currentIndex],

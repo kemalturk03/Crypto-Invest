@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.crypto_invest">
    <application
-        android:label="crypto_invest"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Crypto Invest"
+        android:icon="@mipmap/crypto_invest">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

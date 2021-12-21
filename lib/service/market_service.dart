@@ -8,7 +8,6 @@ class MarketService {
   Future<Market> getData() async {
     final headers = {
       'X-CMC_PRO_API_KEY': apiKey,
-      /*Bu header ı girip apikey i içine verince, bizim apimiz authentication yapmış oluyor*/
     };
 
     http.Response response =
