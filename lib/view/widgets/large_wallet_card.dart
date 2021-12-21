@@ -4,7 +4,6 @@ import 'package:crypto_invest/utilities/components.dart';
 import 'package:crypto_invest/utilities/constants.dart';
 import 'package:crypto_invest/view_model/wallet_view_model.dart';
 import 'package:flutter/material.dart';
-
 import 'alert_dialog.dart';
 
 Widget largeWalletCard(
@@ -25,7 +24,7 @@ Widget largeWalletCard(
     child: Container(
       margin: fourPxAll,
       color: index % 2 == 0 ? Color(0xFF1F2632) : Color(0xFF12171A),
-      height: size.height / 7,
+      height: size.height / 6,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -56,7 +55,7 @@ Widget largeWalletCard(
                 children: [
                   SizedBox(width: size.width / 30),
                   Text('DATE PURCHASED: ${balance.coin!.time}',
-                      style: kWhiteTS.copyWith(fontSize: size.width / 40)),
+                      style: kWhiteTS.copyWith(fontSize: size.width / 45)),
                 ],
               ),
               SizedBox(height: size.width / 35),
@@ -116,7 +115,7 @@ Widget largeWalletCard(
                   ),
                   SizedBox(width: size.width / 40),
                   Container(
-                    width: size.width / 5,
+                    width: size.width / 4.5,
                     height: size.height / 23,
                     child: ElevatedButton(
                       onPressed: () {
